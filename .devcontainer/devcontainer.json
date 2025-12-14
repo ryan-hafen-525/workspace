@@ -1,0 +1,20 @@
+{
+  "name": "Receipt App Monorepo",
+  // Start with a standard Ubuntu-based image that has common tools
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  
+  "features": {
+    // Install Node.js for Next.js
+    "ghcr.io/devcontainers/features/node:1": {},
+    // Install Python for your backend
+    "ghcr.io/devcontainers/features/python:1": {},
+    // Optional: Install Docker-in-Docker if you need to spin up a DB container
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+
+  // Forward ports so you can see them in your local browser
+  "forwardPorts": [3000, 8000],
+
+  // Run commands after the container creates
+  "postCreateCommand": "npm install --prefix frontend && pip install -r api/requirements.txt"
+}

@@ -45,7 +45,7 @@
 
 ### Infrastructure
 - **PostgreSQL 16** for data storage
-- **SeaweedFS** for image storage
+- **Filesystem storage** for receipt images
 - **Docker & Docker Compose** for containerization
 
 ## Prerequisites
@@ -83,9 +83,6 @@ ANTHROPIC_API_KEY=your_anthropic_key
 
 # Database
 DATABASE_URL=postgresql://user:password@db:5432/receipto
-
-# SeaweedFS
-SEAWEEDFS_URL=http://seaweedfs:8080
 ```
 
 ### 3. Start with Docker Compose (Recommended)
@@ -98,6 +95,7 @@ Access the application:
 - **Frontend**: http://localhost:3000
 - **API Documentation**: http://localhost:8000/docs
 - **Database**: localhost:5432
+- **Receipt Images**: Stored in Docker volume `receipto-receipt-images`
 
 ### 4. Manual Setup (Development)
 
@@ -138,7 +136,7 @@ reciepto/
 │   ├── package.json      # Node dependencies
 │   └── tsconfig.json     # TypeScript configuration
 │
-├── db/                   # Database files (docker volume)
+├── db/                   # Database initialization scripts
 │
 ├── .devcontainer/        # Development container config
 ├── docker-compose.yml    # Container orchestration

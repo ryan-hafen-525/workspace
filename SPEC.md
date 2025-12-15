@@ -12,7 +12,7 @@
 - **Backend**: FastAPI (Python 3.10+), Pydantic.
 - **AI/ML**: LangGraph (Workflow Orchestration), AWS Textract (OCR), OpenAI/Anthropic (LLM for cleaning).
 - **Database**: PostgreSQL (v16).
-- **Infrastructure**: Docker, Docker Compose (Local Dev), SeasweedFS (image storage).
+- **Infrastructure**: Docker, Docker Compose (Local Dev), Filesystem storage (image storage).
 
 ### 2.2 Application Type & Configuration
 
@@ -190,11 +190,12 @@ The application will be defined in a `docker-compose.yml` for easy orchestration
 - **Build context**: `./backend`
 - **Port**: 8000
 - **Environment**: AWS credentials, OpenAI API Key, DB connection string
+- **Volume**: `receipt_images:/app/storage` for storing uploaded receipt images
 
 #### db
 - **Image**: `postgres:16-alpine`
 - **Port**: 5432
-- **Volume**: `./postgres-data:/var/lib/postgresql/data`
+- **Volume**: `postgres_data:/var/lib/postgresql/data`
 
 ## 7. Testing Strategy
 

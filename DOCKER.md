@@ -6,8 +6,8 @@ This guide provides essential Docker commands for working with the Reciepto appl
 
 - Docker Engine 20.10+
 - Docker Compose V2
-- At least 4GB of available RAM
-- Ports 3000, 8000, 5432, 8080, 8333, 8888, 9333 must be available
+- At least 2GB of available RAM
+- Ports 3000, 8000, 5432 must be available
 
 ## Quick Start
 
@@ -97,6 +97,16 @@ docker compose logs --tail=100 -f backend
 
 # View logs with timestamps
 docker compose logs -t
+```
+
+### Backup Receipt Images
+
+```bash
+# Create backup of receipt images
+docker run --rm -v receipto-receipt-images:/data -v $(pwd):/backup alpine tar czf /backup/receipts-backup-$(date +%Y%m%d_%H%M%S).tar.gz -C /data .
+
+# Restore receipt images from backup
+docker run --rm -v receipto-receipt-images:/data -v $(pwd):/backup alpine sh -c "cd /data && tar xzf /backup/receipts-backup.tar.gz"
 ```
 
 ## Development Mode
@@ -233,69 +243,6 @@ docker volume rm receipto-postgres-data
 docker compose up -d
 ```
 
-## SeaweedFS Operations
-
-### Check Cluster Status
-
-```bash
-# Check cluster health
-curl http://localhost:9333/cluster/status
-
-# Check volume server status
-curl http://localhost:8080/status
-
-# Check filer status
-curl http://localhost:8888/
-```
-
-### S3 API Operations
-
-You can use AWS CLI or any S3-compatible client:
-
-```bash
-# Configure AWS CLI for SeaweedFS
-aws configure set aws_access_key_id seaweed_admin
-aws configure set aws_secret_access_key seaweed_secret_dev
-aws configure set default.region us-east-1
-
-# Create bucket
-aws s3 --endpoint-url http://localhost:8333 mb s3://receipts
-
-# Upload file
-aws s3 --endpoint-url http://localhost:8333 cp receipt.jpg s3://receipts/
-
-# List files
-aws s3 --endpoint-url http://localhost:8333 ls s3://receipts/
-
-# Download file
-aws s3 --endpoint-url http://localhost:8333 cp s3://receipts/receipt.jpg ./downloaded.jpg
-
-# Delete file
-aws s3 --endpoint-url http://localhost:8333 rm s3://receipts/receipt.jpg
-```
-
-### Using Python boto3
-
-```python
-import boto3
-
-s3 = boto3.client(
-    's3',
-    endpoint_url='http://localhost:8333',
-    aws_access_key_id='seaweed_admin',
-    aws_secret_access_key='seaweed_secret_dev',
-    region_name='us-east-1'
-)
-
-# Upload file
-s3.upload_file('receipt.jpg', 'receipts', 'receipt.jpg')
-
-# List objects
-response = s3.list_objects_v2(Bucket='receipts')
-for obj in response.get('Contents', []):
-    print(obj['Key'])
-```
-
 ## Health Checks
 
 ### Check All Services
@@ -321,18 +268,6 @@ curl http://localhost:8000/docs
 
 # Database
 docker compose exec db pg_isready -U receipto
-
-# SeaweedFS Master
-curl http://localhost:9333/cluster/status
-
-# SeaweedFS Volume
-curl http://localhost:8080/status
-
-# SeaweedFS Filer
-curl http://localhost:8888/
-
-# SeaweedFS S3
-curl http://localhost:8333/
 ```
 
 ## Troubleshooting
@@ -426,7 +361,7 @@ docker volume prune
 
 # Remove specific volume (WARNING: deletes data)
 docker volume rm receipto-postgres-data
-docker volume rm receipto-seaweedfs-volume
+docker volume rm receipto-receipt-images
 ```
 
 ### Complete Cleanup
@@ -439,7 +374,7 @@ docker system prune -af --volumes
 
 # Remove project-specific resources only
 docker compose down -v
-docker volume rm receipto-postgres-data receipto-seaweedfs-master receipto-seaweedfs-volume receipto-seaweedfs-filer
+docker volume rm receipto-postgres-data receipto-receipt-images
 docker network rm receipto-network
 ```
 

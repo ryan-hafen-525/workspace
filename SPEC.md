@@ -188,7 +188,7 @@ The application will be defined in a `docker-compose.yml` for easy orchestration
 
 #### backend
 - **Build context**: `./backend`
-- **Port**: 8000
+- **Port**: 8001 (maps to container port 8000)
 - **Environment**: AWS credentials, OpenAI API Key, DB connection string
 - **Volume**: `receipt_images:/app/storage` for storing uploaded receipt images
 

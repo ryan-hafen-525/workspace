@@ -93,7 +93,7 @@ docker-compose up -d
 
 Access the application:
 - **Frontend**: http://localhost:3000
-- **API Documentation**: http://localhost:8000/docs
+- **API Documentation**: http://localhost:8001/docs
 - **Database**: localhost:5432
 - **Receipt Images**: Stored in Docker volume `receipto-receipt-images`
 
@@ -109,7 +109,7 @@ pip install -r requirements.txt
 fastapi dev main.py
 ```
 
-The API will be available at http://localhost:8000
+The API will be available at http://localhost:8001
 
 #### Frontend Setup
 
@@ -193,8 +193,8 @@ fastapi run main.py   # Production server
 ### API Documentation
 
 FastAPI provides automatic interactive API documentation:
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
+- **Swagger UI**: http://localhost:8001/docs
+- **ReDoc**: http://localhost:8001/redoc
 
 ## API Endpoints
 
@@ -208,7 +208,7 @@ FastAPI provides automatic interactive API documentation:
 - `GET /analytics/spending` - Aggregated spending data
 - `GET /analytics/export` - Export data to CSV
 
-For detailed API schemas and response codes, see the [API Documentation](http://localhost:8000/docs) or [SPEC.md](/SPEC.md).
+For detailed API schemas and response codes, see the [API Documentation](http://localhost:8001/docs) or [SPEC.md](/SPEC.md).
 
 ## Testing
 
@@ -265,7 +265,7 @@ The workflow includes self-correction loops and can flag receipts for manual rev
 **Issue**: Frontend can't connect to API
 - Ensure CORS is properly configured in FastAPI
 - Verify both services are running
-- Check that ports 3000 and 8000 are not blocked
+- Check that ports 3000 and 8001 are not blocked
 
 **Issue**: Database connection errors
 - Verify PostgreSQL is running: `docker-compose ps`
@@ -281,7 +281,7 @@ The workflow includes self-correction loops and can flag receipts for manual rev
 
 1. Check the [Technical Specification](SPEC.md) for implementation details
 2. Review [Development Guidelines](CLAUDE.md) for workflow guidance
-3. Check API documentation at http://localhost:8000/docs
+3. Check API documentation at http://localhost:8001/docs
 4. Review application logs: `docker-compose logs -f`
 
 ## Contributing

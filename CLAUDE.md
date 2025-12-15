@@ -28,7 +28,7 @@ fastapi dev main.py
 fastapi run main.py
 ```
 
-The FastAPI server runs on `http://localhost:8000` by default. API documentation is automatically available at `/docs` (Swagger UI) and `/redoc` (ReDoc).
+The FastAPI server runs on `http://localhost:8001` by default. API documentation is automatically available at `/docs` (Swagger UI) and `/redoc` (ReDoc).
 
 
 ## Key Configuration Files

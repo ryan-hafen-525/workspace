@@ -13,6 +13,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
@@ -88,6 +89,7 @@ export function AppSidebar() {
           <SidebarTrigger />
         </div>
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   )
 }

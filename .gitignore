@@ -43,3 +43,10 @@ yarn-error.log*
 .venv/
 
 *.pyc
+
+# IDE
+.idea/
+.vscode/
+
+# Auto-generated type stubs
+typings/

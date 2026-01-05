@@ -2,38 +2,46 @@
 
 import * as React from "react"
 import { useDropzone, type FileRejection } from "react-dropzone"
-import { Upload, X, FileText, Image as ImageIcon, AlertCircle } from "lucide-react"
+import { Upload, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { UploadFileCard } from "./upload-file-card"
+
+interface FileUploadItem {
+  id: string
+  file: File
+  status: "pending" | "uploading" | "success" | "error"
+  receiptId?: string
+  error?: string
+}
 
 interface ReceiptDropzoneProps {
-  onFileSelect: (file: File) => void
-  onFileRemove: () => void
-  selectedFile: File | null
+  onFilesSelect: (files: File[]) => void
+  onFileRemove: (fileId: string) => void
+  selectedFiles: FileUploadItem[]
   className?: string
   disabled?: boolean
 }
 
 export function ReceiptDropzone({
-  onFileSelect,
+  onFilesSelect,
   onFileRemove,
-  selectedFile,
+  selectedFiles,
   className,
   disabled = false,
 }: ReceiptDropzoneProps) {
   const onDrop = React.useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-      // Handle accepted files (only take the first one since multiple={false})
+      // Handle accepted files (add all of them to the queue)
       if (acceptedFiles.length > 0) {
-        onFileSelect(acceptedFiles[0])
+        onFilesSelect(acceptedFiles)
       }
 
       // We could handle rejected files here (e.g. show toast)
       if (rejectedFiles.length > 0) {
-        console.warn("File rejected:", rejectedFiles[0].errors)
+        console.warn("Files rejected:", rejectedFiles)
       }
     },
-    [onFileSelect]
+    [onFilesSelect]
   )
 
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
@@ -43,49 +51,31 @@ export function ReceiptDropzone({
       "image/png": [],
       "application/pdf": [],
     },
-    maxFiles: 1,
-    multiple: false,
-    disabled: disabled || !!selectedFile,
+    multiple: true,
+    disabled: disabled,
   })
-
-  // Format file size
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return "0 Bytes"
-    const k = 1024
-    const sizes = ["Bytes", "KB", "MB", "GB"]
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
-  }
 
   // Preview content based on state
   const renderContent = () => {
-    if (selectedFile) {
+    if (selectedFiles.length > 0) {
       return (
-        <div className="relative flex w-full max-w-sm flex-col items-center justify-center overflow-hidden rounded-lg border bg-background p-4 shadow-sm">
-            <div className="absolute right-2 top-2 z-10">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 rounded-full hover:bg-destructive/10 hover:text-destructive"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onFileRemove()
-                }}
-              >
-                <X className="h-4 w-4" />
-                <span className="sr-only">Remove file</span>
-              </Button>
-            </div>
-          <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-            {selectedFile.type === "application/pdf" ? (
-              <FileText className="h-8 w-8 text-primary" />
-            ) : (
-              <ImageIcon className="h-8 w-8 text-primary" />
-            )}
+        <div className="w-full space-y-2">
+          <div className="mb-4 text-center">
+            <p className="text-sm text-muted-foreground">
+              {selectedFiles.length} file{selectedFiles.length > 1 ? "s" : ""} selected
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Drop more files or click to add
+            </p>
           </div>
-          <div className="text-center">
-            <p className="truncate text-sm font-medium">{selectedFile.name}</p>
-            <p className="text-xs text-muted-foreground">{formatFileSize(selectedFile.size)}</p>
+          <div className="grid gap-2 max-h-[400px] overflow-y-auto">
+            {selectedFiles.map((fileItem) => (
+              <UploadFileCard
+                key={fileItem.id}
+                fileItem={fileItem}
+                onRemove={onFileRemove}
+              />
+            ))}
           </div>
         </div>
       )
@@ -101,7 +91,7 @@ export function ReceiptDropzone({
         </div>
         <div className="space-y-2">
           <p className="text-lg font-medium">
-            {isDragActive ? "Drop the receipt here" : "Drag and drop your receipt here"}
+            {isDragActive ? "Drop the receipts here" : "Drag and drop your receipts here"}
           </p>
           <p className="text-sm text-muted-foreground">
             or click to browse (JPG, PNG, PDF)
@@ -121,10 +111,10 @@ export function ReceiptDropzone({
     <div
       {...getRootProps()}
       className={cn(
-        "relative flex min-h-[300px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 p-12 transition-colors hover:bg-muted/50",
+        "relative flex min-h-[300px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-solid border-muted-foreground/25 p-8 transition-colors hover:bg-muted/50",
         isDragActive && "border-primary bg-primary/5",
         isDragReject && "border-destructive/50 bg-destructive/5",
-        !!selectedFile && "cursor-default border-muted bg-muted/10 hover:bg-muted/10",
+        selectedFiles.length > 0 && "p-6",
         className
       )}
     >

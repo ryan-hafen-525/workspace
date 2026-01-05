@@ -1,4 +1,8 @@
 import { Settings } from "lucide-react"
+import { CategoryManager } from "@/components/settings/category-manager"
+import { LLMConfig } from "@/components/settings/llm-config"
+import { APIKeysForm } from "@/components/settings/api-keys-form"
+import { Preferences } from "@/components/settings/preferences"
 
 export const metadata = {
   title: "Settings | Reciepto",
@@ -20,11 +24,7 @@ export default function SettingsPage() {
             Manage receipt categories for better organization
           </p>
         </div>
-        <div className="rounded-lg border border-dashed border-muted-foreground/25 p-8">
-          <p className="text-center text-muted-foreground">
-            Category list and editor will be implemented here
-          </p>
-        </div>
+        <CategoryManager />
       </div>
 
       <div className="rounded-lg border border-muted-foreground/25 p-6">
@@ -34,11 +34,7 @@ export default function SettingsPage() {
             Select the language model for receipt processing
           </p>
         </div>
-        <div className="rounded-lg border border-dashed border-muted-foreground/25 p-8">
-          <p className="text-center text-muted-foreground">
-            LLM provider selection (OpenAI, Anthropic) will be implemented here
-          </p>
-        </div>
+        <LLMConfig />
       </div>
 
       <div className="rounded-lg border border-muted-foreground/25 p-6">
@@ -48,28 +44,17 @@ export default function SettingsPage() {
             Configure API keys for external services
           </p>
         </div>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-dashed border-muted-foreground/25 p-4">
-            <p className="font-medium mb-2">AWS Textract</p>
-            <p className="text-sm text-muted-foreground">OCR service for receipt processing</p>
-          </div>
-          <div className="rounded-lg border border-dashed border-muted-foreground/25 p-4">
-            <p className="font-medium mb-2">OpenAI / Anthropic</p>
-            <p className="text-sm text-muted-foreground">LLM service for data extraction</p>
-          </div>
-        </div>
-        <p className="text-xs text-center text-muted-foreground mt-6">
-          Placeholder: API key input forms will be implemented here
-        </p>
+        <APIKeysForm />
       </div>
 
       <div className="rounded-lg border border-muted-foreground/25 p-6">
         <h2 className="text-xl font-semibold mb-4">Preferences</h2>
-        <div className="rounded-lg border border-dashed border-muted-foreground/25 p-8">
-          <p className="text-center text-muted-foreground">
-            Additional app preferences (theme, notifications, etc.) will be implemented here
+        <div className="space-y-2 mb-4">
+          <p className="text-sm text-muted-foreground">
+            Customize your app experience
           </p>
         </div>
+        <Preferences />
       </div>
     </div>
   )

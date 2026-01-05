@@ -40,8 +40,7 @@ services:
       AWS_REGION: ${AWS_REGION:-us-west-2}
 
       # LLM API Keys
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
 
       # Storage
       STORAGE_PATH: /app/storage/receipts
@@ -50,7 +49,7 @@ services:
       ENVIRONMENT: ${ENVIRONMENT:-development}
       LOG_LEVEL: ${LOG_LEVEL:-info}
     ports:
-      - "8001:8000"
+      - "8000:8000"
     volumes:
       - receipt_images:/app/storage
     depends_on:
@@ -74,7 +73,8 @@ services:
     container_name: receipto-frontend
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_URL: http://localhost:8001
+      # API_URL is server-side only, used by Next.js rewrites
+      API_URL: http://backend:8000
     ports:
       - "3000:3000"
     depends_on:

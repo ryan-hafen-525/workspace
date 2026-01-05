@@ -7,7 +7,7 @@ This guide provides essential Docker commands for working with the Reciepto appl
 - Docker Engine 20.10+
 - Docker Compose V2
 - At least 2GB of available RAM
-- Ports 3000, 8001, 5432 must be available
+- Ports 3000, 8000, 5432 must be available
 
 ## Quick Start
 
@@ -261,10 +261,10 @@ docker compose ps
 curl http://localhost:3000
 
 # Backend API
-curl http://localhost:8001/health
+curl http://localhost:8000/health
 
 # Backend API docs
-curl http://localhost:8001/docs
+curl http://localhost:8000/docs
 
 # Database
 docker compose exec db pg_isready -U receipto
@@ -300,7 +300,7 @@ docker compose up -d backend
 ```bash
 # Check what's using the port
 lsof -i :3000
-lsof -i :8001
+lsof -i :8000
 
 # Kill process using the port
 kill -9 <PID>

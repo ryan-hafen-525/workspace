@@ -5,12 +5,14 @@
 ## Features
 
 ### 📸 Receipt Processing
+
 - **Smart Upload**: Drag-and-drop interface for JPG, PNG, and PDF receipts
 - **AI-Powered Extraction**: Automated OCR with AWS Textract and LLM-based data cleaning
 - **Line-Item Detection**: Extracts individual items, prices, quantities, and categories
 - **Manual Corrections**: Edit and correct extracted data through an intuitive interface
 
 ### 📊 Analytics & Insights
+
 - **Visual Dashboards**:
   - Spending by Category (Pie Charts)
   - Monthly Trends (Bar Charts)
@@ -19,11 +21,13 @@
 - **Recent Activity**: Track processing status of uploaded receipts
 
 ### 💰 Budget Management
+
 - **Category Budgets**: Set monthly spending limits per category
 - **Smart Alerts**: Visual indicators when approaching budget limits
 - **11 Default Categories**: Groceries, Dining, Transportation, Utilities, Entertainment, Healthcare, Clothing, Home & Garden, Personal Care, Shopping, and Other
 
 ### ⚙️ Customization
+
 - **Category Management**: Create and edit spending categories
 - **LLM Selection**: Choose between OpenAI and Anthropic models
 - **API Configuration**: Manage AWS Textract and LLM API keys
@@ -31,12 +35,14 @@
 ## Tech Stack
 
 ### Frontend
+
 - **Next.js 16** with App Router
 - **React 19** with TypeScript
 - **Tailwind CSS 4** for styling
 - **Shadcn/UI** component library
 
 ### Backend
+
 - **FastAPI** (Python 3.12)
 - **LangGraph** for workflow orchestration
 - **AWS Textract** for OCR
@@ -44,6 +50,7 @@
 - **Pydantic** for data validation
 
 ### Infrastructure
+
 - **PostgreSQL 16** for data storage
 - **Filesystem storage** for receipt images
 - **Docker & Docker Compose** for containerization
@@ -92,8 +99,9 @@ docker-compose up -d
 ```
 
 Access the application:
+
 - **Frontend**: http://localhost:3000
-- **API Documentation**: http://localhost:8001/docs
+- **API Documentation**: http://localhost:8000/docs
 - **Database**: localhost:5432
 - **Receipt Images**: Stored in Docker volume `receipto-receipt-images`
 
@@ -109,7 +117,7 @@ pip install -r requirements.txt
 fastapi dev main.py
 ```
 
-The API will be available at http://localhost:8001
+The API will be available at http://localhost:8000
 
 #### Frontend Setup
 
@@ -154,6 +162,7 @@ Reciepto is designed as a single-user application with no authentication system.
 ### Default Categories
 
 The application seeds the following categories on first run:
+
 - Groceries
 - Dining
 - Transportation
@@ -193,22 +202,25 @@ fastapi run main.py   # Production server
 ### API Documentation
 
 FastAPI provides automatic interactive API documentation:
-- **Swagger UI**: http://localhost:8001/docs
-- **ReDoc**: http://localhost:8001/redoc
+
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
 
 ## API Endpoints
 
 ### Receipt Management
+
 - `POST /receipts/upload` - Upload and process receipt
 - `GET /receipts` - List all receipts (paginated)
 - `GET /receipts/{id}` - Get receipt details with line items
 - `PATCH /receipts/{id}` - Update receipt data
 
 ### Analytics
+
 - `GET /analytics/spending` - Aggregated spending data
 - `GET /analytics/export` - Export data to CSV
 
-For detailed API schemas and response codes, see the [API Documentation](http://localhost:8001/docs) or [SPEC.md](/SPEC.md).
+For detailed API schemas and response codes, see the [API Documentation](http://localhost:8000/docs) or [SPEC.md](/SPEC.md).
 
 ## Testing
 
@@ -236,6 +248,7 @@ pytest --cov          # Coverage report
 
 **Framework**: pytest + pytest-asyncio
 **Mocking**:
+
 - AWS Textract via `moto` library
 - LLM APIs via custom fixtures
 - Database via test containers
@@ -258,21 +271,25 @@ The workflow includes self-correction loops and can flag receipts for manual rev
 ### Common Issues
 
 **Issue**: Upload fails with "Processing..." stuck
+
 - Check that the backend is running on port 8000
 - Verify AWS Textract credentials are valid
 - Check backend logs: `docker-compose logs backend`
 
 **Issue**: Frontend can't connect to API
+
 - Ensure CORS is properly configured in FastAPI
 - Verify both services are running
-- Check that ports 3000 and 8001 are not blocked
+- Check that ports 3000 and 8000 are not blocked
 
 **Issue**: Database connection errors
+
 - Verify PostgreSQL is running: `docker-compose ps`
 - Check DATABASE_URL environment variable
 - Ensure database migrations have run
 
 **Issue**: LLM extraction fails
+
 - Verify API keys are set correctly
 - Check API rate limits haven't been exceeded
 - Review backend logs for specific error messages
@@ -281,7 +298,7 @@ The workflow includes self-correction loops and can flag receipts for manual rev
 
 1. Check the [Technical Specification](SPEC.md) for implementation details
 2. Review [Development Guidelines](CLAUDE.md) for workflow guidance
-3. Check API documentation at http://localhost:8001/docs
+3. Check API documentation at http://localhost:8000/docs
 4. Review application logs: `docker-compose logs -f`
 
 ## Contributing
